@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Set up a whitelist and check against it:
-var whitelist = ["https://veggiesecom.herokuapp.com"];
+var whitelist = ["https://veggiesshop.netlify.app"];
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
