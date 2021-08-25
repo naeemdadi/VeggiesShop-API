@@ -38,7 +38,7 @@ userRouter.post("/sendOTP", (req, res) => {
 
   client.messages.create({
     body: `Dear user, use OTP code ${otp} to verify your account. @VeggiesShop`,
-    from: +15613494321,
+    from: process.env.TWILIO_NUM,
     to: indianNumber,
   });
 
