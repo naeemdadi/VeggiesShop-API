@@ -12,7 +12,21 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+
+// Set up a whitelist and check against it:
+var whitelist = ["https://veggiesecom.herokuapp.com"];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+
+// Then pass them to cors:
+app.use(cors(corsOptions));
 
 mongoose.connect(process.env.MONGODB_URL || "mongodb://localhost/VeggiesEcom", {
   useNewUrlParser: true,
