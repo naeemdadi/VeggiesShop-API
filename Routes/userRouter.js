@@ -42,7 +42,7 @@ userRouter.post("/sendOTP", (req, res) => {
     to: indianNumber,
   });
 
-  res.status(200).send({ phone, hash: fullHash, otp });
+  res.status(200).send({ hash: fullHash });
 });
 
 userRouter.post(
