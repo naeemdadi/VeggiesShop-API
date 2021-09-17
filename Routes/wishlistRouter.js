@@ -46,11 +46,7 @@ wishlistRouter.delete(
   expressAsyncHandler(async (req, res) => {
     const wishlist = await Wishlist.find({ user: req.user._id });
 
-    console.log(req.body);
-
     const wishlistItem = wishlist.find((x) => x.product == req.body.id);
-
-    // console.log(wishlistItem);
 
     if (wishlistItem) {
       const product = await Product.findById(req.body.id);
