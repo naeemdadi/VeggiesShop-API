@@ -25,20 +25,19 @@ const isDomainAllowed = (origin, domains) => {
 };
 
 // Set up a whitelist and check against it:
-var whitelist = ["veggiesshop.netlify.app", "localhost"];
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (isDomainAllowed(req?.header('Origin'), allowlist)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
+var corsOptionsDelegate = function (req, callback) {
+  const allowlist = ["veggiesshop.netlify.app", "localhost"];
+  var corsOptions;
+  if (isDomainAllowed(req?.header('Origin'), allowlist)) {
+    corsOptions = { origin: true, credentials: true }; // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = { origin: false }; // disable CORS for this request
+  }
+  callback(null, corsOptions); // callback expects two parameters: error and options
 };
 
 // Then pass them to cors:
-app.use(cors(corsOptions));
+app.use(cors(corsOptionsDelegate));
 
 mongoose.connect(process.env.MONGODB_URL || "mongodb://localhost/VeggiesEcom", {
   useNewUrlParser: true,

@@ -5,7 +5,6 @@ import twilio from "twilio";
 import dotenv from "dotenv";
 import { generateToken, isAuth } from "../utils.js";
 
-import data from "../data.js";
 import User from "../models/userModel.js";
 
 const userRouter = express.Router();
@@ -16,14 +15,6 @@ const authTokenTwilio = process.env.AUTH_TOKEN_TWILIO;
 const client = twilio(accountSid, authTokenTwilio);
 
 const smsKey = process.env.SMS_SECRET_KEY;
-
-userRouter.get(
-  "/seed",
-  expressAsyncHandler(async (req, res) => {
-    const createdUsers = await User.insertMany(data.users);
-    res.send({ createdUsers });
-  })
-);
 
 userRouter.post("/sendOTP", (req, res) => {
   const phone = req.body.phone;
