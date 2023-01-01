@@ -14,10 +14,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Set up a whitelist and check against it:
-var whitelist = ["https://veggiesshop.netlify.app"];
+const isDomainAllowed = (origin, domains) => {
+  let isAllowed = false;
+  domains?.forEach(domain => {
+    if (origin?.includes(domain)) {
+      isAllowed = true;
+    }
+  });
+  return isAllowed;
+};
+
+// Set up a whitelist and check against it:
+var whitelist = ["veggiesshop.netlify.app", "localhost"];
 var corsOptions = {
   origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
+    if (isDomainAllowed(req?.header('Origin'), allowlist)) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
