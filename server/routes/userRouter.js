@@ -1,20 +1,15 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import crypto from "crypto";
-import twilio from "twilio";
 import dotenv from "dotenv";
-import { generateToken, isAuth } from "../utils.js";
+import { generateToken } from "../utils/index.js";
 
 import User from "../models/userModel.js";
+import isAuth from "../middleware/index.js";
+import { sendText } from "../fastTwoSms/index.js";
 
 const userRouter = express.Router();
 dotenv.config();
-
-const accountSid = process.env.ACCOUNT_SID;
-const authTokenTwilio = process.env.AUTH_TOKEN_TWILIO;
-const client = twilio(accountSid, authTokenTwilio);
-
-const smsKey = process.env.SMS_SECRET_KEY;
 
 userRouter.post("/sendOTP", (req, res) => {
   const phone = req.body.phone;
@@ -25,13 +20,7 @@ userRouter.post("/sendOTP", (req, res) => {
   const hash = crypto.createHmac("sha256", smsKey).update(data).digest("hex");
   const fullHash = `${hash}.${expires}`;
 
-  const indianNumber = "+91" + phone;
-
-  client.messages.create({
-    body: `Dear user, use OTP code ${otp} to verify your account. @VeggiesShop`,
-    from: process.env.TWILIO_NUM,
-    to: indianNumber,
-  });
+  sendText({ otp, numbers: phone });
 
   res.status(200).send({ hash: fullHash });
 });

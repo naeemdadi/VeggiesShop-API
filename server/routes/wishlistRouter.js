@@ -1,10 +1,10 @@
 import expressAsyncHandler from "express-async-handler";
 import express from "express";
 
-import { isAuth } from "../utils.js";
 import Wishlist from "../models/wishlistModal.js";
 import User from "../models/userModel.js";
 import Product from "../models/productModel.js";
+import isAuth from "../middleware/index.js";
 
 const wishlistRouter = express.Router();
 

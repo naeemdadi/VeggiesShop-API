@@ -3,10 +3,10 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 
-import productRouter from "./Routes/productRouter.js";
-import userRouter from "./Routes/userRouter.js";
-import orderRouter from "./Routes/orderRouter.js";
-import wishlistRouter from "./Routes/wishlistRouter.js";
+import productRouter from "./server/routes/productRouter.js";
+import userRouter from "./server/routes/userRouter.js";
+import orderRouter from "./server/routes/orderRouter.js";
+import wishlistRouter from "./server/routes/wishlistRouter.js";
 
 dotenv.config();
 const app = express();
@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 // Set up a whitelist and check against it:
 const isDomainAllowed = (origin, domains) => {
   let isAllowed = false;
-  domains?.forEach(domain => {
+  domains?.forEach((domain) => {
     if (origin?.includes(domain)) {
       isAllowed = true;
     }
@@ -28,7 +28,7 @@ const isDomainAllowed = (origin, domains) => {
 var corsOptionsDelegate = function (req, callback) {
   const allowlist = ["veggiesshop.netlify.app", "localhost"];
   var corsOptions;
-  if (isDomainAllowed(req?.header('Origin'), allowlist)) {
+  if (isDomainAllowed(req?.header("Origin"), allowlist)) {
     corsOptions = { origin: true, credentials: true }; // reflect (enable) the requested origin in the CORS response
   } else {
     corsOptions = { origin: false }; // disable CORS for this request
@@ -57,7 +57,7 @@ app.get("/api/config/paypal", (req, res) => {
 
 // Server route
 app.get("/", (req, res) => {
-  res.send("Getting data from Server");
+  res.send("Service up and running!");
 });
 
 // Middleware for sending an error message to front
@@ -66,7 +66,7 @@ app.use((err, req, res, next) => {
   next();
 });
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 9000;
 
 // Starting a Server
 app.listen(port, () => {
