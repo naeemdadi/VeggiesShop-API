@@ -11,6 +11,8 @@ import { sendText } from "../fastTwoSms/index.js";
 const userRouter = express.Router();
 dotenv.config();
 
+const smsKey = process.env.SMS_SECRET_KEY;
+
 userRouter.post("/sendOTP", (req, res) => {
   const phone = req.body.phone;
   const otp = Math.floor(1000 + Math.random() * 9000);
